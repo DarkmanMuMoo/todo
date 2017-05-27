@@ -3,13 +3,14 @@ package com.mumoo.todo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-public @Data @NoArgsConstructor class TodoDTO {
+@Data @NoArgsConstructor
+public class Todo {
 	private Long id;
 	private String subject;
 	private String content;
-	private TodoStatus status;
+	private int status;
 
-	public TodoDTO(Long id, String subject, String content, TodoStatus status) {
+	public Todo(Long id, String subject, String content, int status) {
 		super();
 		this.id = id;
 		this.subject = subject;
