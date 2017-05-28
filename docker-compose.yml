@@ -1,0 +1,15 @@
+version: '2'
+services:
+    todo-db:
+        image: mysql:5.7
+        environment:
+             - MYSQL_ROOT_PASSWORD=admin
+             - MYSQL_DATABASE=todo
+             - MYSQL_USER=todo
+             - MYSQL_PASSWORD=1234
+        ports:
+             - 3306:3306
+    todo:
+        image: mumoo/todo
+        ports:
+             - 8080:8080
