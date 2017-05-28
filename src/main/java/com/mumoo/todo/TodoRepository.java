@@ -54,7 +54,7 @@ public class TodoRepository {
 
 			PreparedStatement pst = con.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
 			pst.setString(1, todo.getSubject());
-			pst.setString(2, todo.getSubject());
+			pst.setString(2, todo.getContent());
 			pst.setInt(3, todo.getStatus());
 			return pst;
 		}, holder);
