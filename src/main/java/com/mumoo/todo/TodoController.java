@@ -22,6 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mumoo.exception.APIException;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ResponseHeader;
+
+@Api("Todo Service")
 @RestController
 @RequestMapping("todo")
 public class TodoController {
@@ -32,42 +40,63 @@ public class TodoController {
 		this.todoService = todoService;
 	}
 
+	@ApiOperation(httpMethod = "GET", value = "List all of Task", response = TodoDTO.class, responseContainer = "List", produces = "application/json")
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Server Error") })
 	@GetMapping
 	public List<TodoDTO> list() {
 
 		return todoService.list();
 	}
 
+	@ApiOperation(httpMethod = "GET", value = "Get task by ID", response = TodoDTO.class, produces = "application/json")
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Server Error"),
+			@ApiResponse(code = 404, message = "no task found") })
 	@GetMapping("{id}")
-	public TodoDTO get(@PathVariable Long id) throws APIException {
+	public TodoDTO get(@ApiParam(value = "ID of task", required = true) @PathVariable Long id) throws APIException {
 		return todoService.get(id);
 	}
 
+	@ApiOperation(httpMethod = "POST", responseHeaders = @ResponseHeader(name = "Location", description = "URL to get new create task", response = String.class), notes = "created task will has default status as PENDING", value = "Create Task", response = TodoDTO.class, produces = "application/json", consumes = "application/json", code = 201)
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Task created", responseHeaders = {}),
+			@ApiResponse(code = 500, message = "Server Error", responseHeaders = {}),
+			@ApiResponse(code = 404, message = "no task found", responseHeaders = {}),
+			@ApiResponse(code = 400, message = "data model not valid", responseHeaders = {}) })
 	@PostMapping
-	public ResponseEntity<TodoDTO> create(HttpServletRequest request, @RequestBody TodoDTO dto) {
+	public ResponseEntity<TodoDTO> create(HttpServletRequest request, @RequestBody TodoRequestDTO dto) {
 		Long id = this.todoService.create(dto);
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.set(HttpHeaders.LOCATION, getURLBase(request) + "/todo/" + id);
-		dto.setId(id);
-		dto.setStatus(TodoStatus.PENDING);
-		return new ResponseEntity<TodoDTO>(dto, responseHeaders, HttpStatus.CREATED);
+		TodoDTO response = new TodoDTO(id, dto.getSubject(), dto.getContent(), TodoStatus.PENDING);
+		return new ResponseEntity<TodoDTO>(response, responseHeaders, HttpStatus.CREATED);
 
 	}
 
+	@ApiOperation(httpMethod = "PUT", value = "update data of specific Task", response = TodoDTO.class, produces = "application/json", consumes = "application/json")
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Server Error"),
+			@ApiResponse(code = 404, message = "no task found") })
 	@PutMapping("{id}")
-	public ResponseEntity<TodoDTO> edit(@PathVariable Long id, @RequestBody TodoDTO dto) throws APIException {
+	public ResponseEntity<TodoDTO> edit(@ApiParam(value = "ID of task", required = true) @PathVariable Long id,
+			@RequestBody TodoRequestDTO dto) throws APIException {
 		TodoDTO update = this.todoService.update(id, dto);
 
 		return new ResponseEntity<TodoDTO>(update, HttpStatus.OK);
 	}
 
+	@ApiOperation(httpMethod = "PATCH", value = "Change status of Task")
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Server Error"),
+			@ApiResponse(code = 404, message = "no task found"), @ApiResponse(code = 400, message = "invalid status") })
 	@PatchMapping("{id}")
-	public void setStatus(@PathVariable Long id, @RequestParam TodoStatus status) throws APIException {
+	public void setStatus(@ApiParam(value = "ID of task", required = true) @PathVariable Long id,
+			@ApiParam(value = "Change Status value ", required = true) @RequestParam TodoStatus status)
+			throws APIException {
 		this.todoService.setStatus(id, status);
 	}
 
+	@ApiOperation(httpMethod = "DELETE", value = "Delete Task")
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Server Error"),
+			@ApiResponse(code = 404, message = "no task found") })
 	@DeleteMapping("{id}")
-	public void delete(@PathVariable Long id) throws APIException {
+	public void delete(@ApiParam(value = "ID of task", required = true) @PathVariable Long id) throws APIException {
 		this.todoService.delete(id);
 	}
 

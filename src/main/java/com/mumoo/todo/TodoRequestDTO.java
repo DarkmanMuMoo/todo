@@ -7,25 +7,23 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-@ApiModel(value = "Content of Task")
+@ApiModel(value = "Request of Task")
 @Data
 @NoArgsConstructor
-public class TodoDTO {
-	private Long id;
+public class TodoRequestDTO {
+
 	@NotEmpty
 	@ApiModelProperty(value = "subject of task", required = true)
 	private String subject;
 	@ApiModelProperty(value = "content of task")
 	private String content;
-	private TodoStatus status;
 
-	public TodoDTO(Long id, String subject, String content, TodoStatus status) {
+	public TodoRequestDTO(String subject, String content) {
 		super();
-		this.id = id;
+
 		this.subject = subject;
 		this.content = content;
-		this.status = status;
+
 	}
 
 }

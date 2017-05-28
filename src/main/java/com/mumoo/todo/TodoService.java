@@ -22,16 +22,15 @@ public class TodoService {
 		this.todoRepository = todoRepository;
 	}
 
-	public Long create(TodoDTO dto) {
-		dto.setStatus(TodoStatus.PENDING);
-		return todoRepository.insert(this.toEntity(dto));
+	public Long create(TodoRequestDTO dto) {
+		return todoRepository.insert(this.createTodo(dto));
 	}
 
 	public List<TodoDTO> list() {
 		return todoRepository.list().stream().map(this::toDTO).collect(toList());
 	}
 
-	public TodoDTO update(Long id, TodoDTO update) throws APIException {
+	public TodoDTO update(Long id, TodoRequestDTO update) throws APIException {
 		Todo todo = checkExist(id);
 		todo.setSubject(update.getSubject());
 		todo.setContent(update.getContent());
@@ -64,8 +63,8 @@ public class TodoService {
 		}
 	}
 
-	private Todo toEntity(TodoDTO dto) {
-		return new Todo(null, dto.getSubject(), dto.getContent(), dto.getStatus().ordinal());
+	private Todo createTodo(TodoRequestDTO dto) {
+		return new Todo(null, dto.getSubject(), dto.getContent(), TodoStatus.PENDING.ordinal());
 	}
 
 	private TodoDTO toDTO(Todo entity) {
