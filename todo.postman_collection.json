@@ -1,0 +1,104 @@
+{
+	"variables": [],
+	"info": {
+		"name": "todo",
+		"_postman_id": "cf734228-ab1c-ed68-77f3-619b18c106ff",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:8080/todo",
+			"request": {
+				"url": "localhost:8080/todo",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"subject\": \"sdfds\",\n  \"content\": \"sdssdfsdfsdfsdfd\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/todo/{id}",
+			"request": {
+				"url": "localhost:8080/todo/1",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/todo/",
+			"request": {
+				"url": "localhost:8080/todo/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"subject\": \"sdfds\",\n  \"content\": \"sdsfd\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/todo/1",
+			"request": {
+				"url": "localhost:8080/todo/1",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"subject\": \"sdfds\",\n  \"content\": \"sdsfd\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/todo/1?status=DONE",
+			"request": {
+				"url": "localhost:8080/todo/1?status=DONE",
+				"method": "PATCH",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/todo/1",
+			"request": {
+				"url": "localhost:8080/todo/1",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

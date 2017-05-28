@@ -25,7 +25,6 @@
 ```
   mvn clean install
   mvn docker:build
-  docker-compose pull todo-db
   docker-compose up
 ```
 # Documentation
