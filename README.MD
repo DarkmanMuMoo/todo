@@ -24,7 +24,7 @@
   use mysql for db  and use docker for setup the enviroment 
 ```
   mvn clean install
-  mvn docker:build
+  mvn docker:build (export DOCKER_HOST=tcp://localhost:2375 before doing this)
   docker-compose up
 ```
 # Documentation
